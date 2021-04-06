@@ -1,5 +1,6 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=logo.ico
+#AutoIt3Wrapper_UseUpx=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #cs ----------------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ Opt("GUIOnEventMode", 1) ; Change to OnEvent mode
 
 
 ;Constantes globales
-Global $G_C_key="^RJaXKUHUB$,dcn%wfwf*rf306-ET*-by3=OMI"
+Global $G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"
 Const $G_C_KeyFile="qkOtsasa&fwe**de3sT\PDa80lTyr4@\jE"
 Global $G_BDFile
 
@@ -46,6 +47,7 @@ GUICtrlSetOnEvent(-1,"m_Salir")
 $MenuItem4 = GUICtrlCreateMenu("Ayuda")
 $MenuItem6 = GUICtrlCreateMenuItem("Ayuda", $MenuItem4)
 $MenuItem7 = GUICtrlCreateMenuItem("Créditos", $MenuItem4)
+GUICtrlSetOnEvent(-1,"Creditos")
 ;área del menu FIN
 
 
@@ -85,8 +87,22 @@ While 1
     Sleep(100) ; Sleep to reduce CPU usage
 WEnd
 
+;Cierra la GUI
+Func GUIClose()
+	Exit
+EndFunc
 
-;Descarga y gestiona una BD almacenada en google drive
+
+
+;Créditos
+Func Creditos()
+	MsgBox(0,"Créditos","Nombre: Archivador"&@CRLF&"Lenguaje de Programación:AutoIt V3"&@CRLF&"Programador:Ing. Yorjandi PG")
+EndFunc
+
+
+
+
+;Descarga y gestiona una BD almacenada en google drive (Experimental)
 func TestDrive()
 local $temp, $KQ, $idownload
 ;~ $url = "https://drive.google.com/file/d/1oDeq1Ci5SwWTQjKSy5oYvLCsc5UpMEwA/view?usp=sharing"
@@ -110,7 +126,7 @@ Do
 
 InetClose($idownload) ;cerrando el handle creado
 
-$G_C_key="^RJaXKUHUB$,dcn%wfwf*rf306-ET*-by3=OMI"; reinicia el valor base de la clave.
+$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"; reinicia el valor base de la clave.
 
 $G_BDFile = @ScriptDir&"\DrvBD_"&@YDAY&@MON&@MSEC&".yrt"  ;Actualiza la direccion global del fichro BD
 
@@ -126,14 +142,11 @@ EndFunc
 
 
 
-
-
-
 ;Función de Arrastrar y soltar
 func DragAndDrop()
 Local $temp
 
-$G_C_key="^RJaXKUHUB$,dcn%wfwf*rf306-ET*-by3=OMI"; reinicia el valor base de la clave.
+$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"; reinicia el valor base de la clave.
 
 $G_BDFile = @GUI_DragFile  ;Actualiza la direccion global del fichro BD
 
@@ -143,7 +156,11 @@ GUICtrlSetData($Edit1,"")
 GUICtrlSetData($Button6,"Modificar")
 GUICtrlSetState($Edit1,$GUI_DISABLE)
 
-tufmo();Genera la clave de cifrado
+if tufmo() = 0 then return ;si falla la modificación de la clave de cifrado sale.
+
+
+
+
 Y_LoadBD()
 
 EndFunc
@@ -151,10 +168,6 @@ EndFunc
 
 
 
-;Cierra la GUI
-Func GUIClose()
-	Exit
-EndFunc
 
 ;Crear estructura de BD por defecto
 func m_CrearBD()
@@ -163,7 +176,9 @@ Local $temp
 $temp = FileOpenDialog("Crear Estructura por defecto de BD",@ScriptDir,"All (*.*)")
 
 
-tufmo();Genera la clave de cifrado
+if tufmo() = 0 then return ;si falla la modificación de la clave de cifrado sale.
+
+
 
 
 IniWriteSection($temp,Y_CipherText("NOTAS"),"")
@@ -180,7 +195,7 @@ EndFunc
 func m_AbrirBD()
 Local $temp
 
-$G_C_key="^RJaXKUHUB$,dcn%wfwf*rf306-ET*-by3=OMI"; reinicia el valor base de la clave.
+$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"; reinicia el valor base de la clave.
 
 $temp = FileOpenDialog("Abrir fichero BD",@ScriptDir,"Text Files(*.*)",$FD_FILEMUSTEXIST)
 if @error <> 0 then
@@ -472,25 +487,32 @@ EndFunc
 
 
 ;Clave única en tiempo de ejecución !!!!Advertencia esta clave no puede ser olvidada!!!
+;Retorna 0 si ha habido algún error
+;Retorna 1 si todo OK
 func tufmo()
 Local $temp,$temp2, $i
 
 ;Modificando la clave principal de cifrado con una clave dada en tiempo de ejecución
-$temp = InputBox("Clave en RunTime","Solo 4 caracteres.!No puede olvidar la clave!.","","-")
+$temp = InputBox("Subclave flotante","!No puede olvidar esta clave!.","","-")
+$temp = StringStripWS($temp,8)
 
-if StringLen($temp) <> 4 then ;si no se ha dado clave salir del programa
-	return
+if StringLen($temp) < 4 then ;si no se ha dado clave salir del programa
+	MsgBox(0,"Error","La clave debe contener al menos 4 caracteres. No se permite espacios")
+	return 0
 EndIf
 
-;Extrayendo cada carácter e insertándolo en posiciones específicas dentro del texto de la clave de cifrado
+;Generando permutaciones entre esta clave y la clave principal
+;número de ciclos de permutaciones:
 for $i = 1 to 4
 	$temp2 = StringLeft ( $temp, $i )
-$G_C_key = _StringInsert ( $G_C_key, $temp2, $i+3*$i )
-$G_C_key = _StringInsert ( $G_C_key, $temp2, -1 * ($i+8*$i) )
-$G_C_key = _StringInsert ( $G_C_key, $temp2, -1 * ($i+5*$i) )
+$G_C_key = _StringInsert ( $G_C_key, $temp2, $i+3 )
+$G_C_key = _StringInsert ( $G_C_key, $temp2, -1 * ($i+4) )
+$G_C_key = _StringInsert ( $G_C_key, $temp2, -1 * ($i+5) )
 next
 
 
+ClipPut($G_C_key)
+return 1 ; Todo OKOK
 EndFunc
 
 
