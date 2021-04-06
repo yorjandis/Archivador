@@ -42,7 +42,7 @@ GUISetOnEvent($GUI_EVENT_DROPPED,"DragAndDrop")
 $MenuItem1 = GUICtrlCreateMenu("Archivo")
 $MenuItem2 = GUICtrlCreateMenuItem("Abrir BD Archivos...", $MenuItem1)
 GUICtrlSetOnEvent(-1, "m_AbrirBD")
-$MenuItem2_2= GUICtrlCreateMenuItem("Abrir BD en Google Drive...", $MenuItem1)
+$MenuItem2_2= GUICtrlCreateMenuItem("Extraer BD en Google Drive...", $MenuItem1)
 GUICtrlSetOnEvent(-1, "m_AbrirBDDrive")
 
 $MenuItem3 = GUICtrlCreateMenuItem("Crear BD", $MenuItem1)
