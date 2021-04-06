@@ -1,6 +1,10 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=logo.ico
 #AutoIt3Wrapper_UseUpx=y
+#AutoIt3Wrapper_Res_ProductName=Archivador
+#AutoIt3Wrapper_Res_CompanyName=YPG
+#AutoIt3Wrapper_Res_LegalCopyright=Ing. Yorjandis PG
+#AutoIt3Wrapper_Res_Language=1034
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #cs ----------------------------------------------------------------------------
 
@@ -26,19 +30,20 @@ Opt("GUIOnEventMode", 1) ; Change to OnEvent mode
 
 
 ;Constantes globales
-Global $G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"
+Global $G_C_key
 Const $G_C_KeyFile="qkOtsasa&fwe**de3sT\PDa80lTyr4@\jE"
 Global $G_BDFile
 
 $Form1 = GUICreate("Archivador V.1.0 YPG", 910, 382, 236, 123,-1,$WS_EX_ACCEPTFILES)
 GUISetOnEvent($GUI_EVENT_CLOSE,"GUIClose")
 GUISetOnEvent($GUI_EVENT_DROPPED,"DragAndDrop")
+
 ;área del menu
 $MenuItem1 = GUICtrlCreateMenu("Archivo")
 $MenuItem2 = GUICtrlCreateMenuItem("Abrir BD Archivos...", $MenuItem1)
 GUICtrlSetOnEvent(-1, "m_AbrirBD")
-$MenuItem2_2= GUICtrlCreateMenuItem("Abrir BD Google Drive...", $MenuItem1)
-GUICtrlSetOnEvent(-1, "TestDrive")
+$MenuItem2_2= GUICtrlCreateMenuItem("Abrir BD en Google Drive...", $MenuItem1)
+GUICtrlSetOnEvent(-1, "m_AbrirBDDrive")
 
 $MenuItem3 = GUICtrlCreateMenuItem("Crear BD", $MenuItem1)
 GUICtrlSetOnEvent(-1, "m_CrearBD")
@@ -96,16 +101,16 @@ EndFunc
 
 ;Créditos
 Func Creditos()
-	MsgBox(0,"Créditos","Nombre: Archivador"&@CRLF&"Lenguaje de Programación:AutoIt V3"&@CRLF&"Programador:Ing. Yorjandi PG")
+	MsgBox(0,"Créditos","Nombre: Archivador V1.0"&@CRLF&"Lenguaje de Programación:AutoIt V3"&@CRLF&"Programador:Ing. Yorjandi PG")
 EndFunc
 
 
 
 
 ;Descarga y gestiona una BD almacenada en google drive (Experimental)
-func TestDrive()
+func m_AbrirBDDrive()
 local $temp, $KQ, $idownload
-;~ $url = "https://drive.google.com/file/d/1oDeq1Ci5SwWTQjKSy5oYvLCsc5UpMEwA/view?usp=sharing"
+;~ $url = "https://drive.google.com/file/d/1c0OVp3eSfC5LpQfeax2U1kBtW0c0lbT0/view?usp=sharing"
 
 $url = InputBox("Función Experimental","Coloque el enlace público de la BD. Se Creará una copia local con prefijo 'DrvBD_*.yrt'")
 
@@ -118,26 +123,25 @@ EndIf
 $KQ = StringRegExp($url,"[-\w]{25,}",1)
 $url = "https://drive.google.com/uc?export=download&id=" & $KQ[0]
 
-$idownload = InetGet($url,@ScriptDir&"\DrvBD_"&@YDAY&@MON&@MSEC&".yrt",$INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
-;Esperando a que se descarge el fichero
-Do
-        Sleep(250)
-    Until InetGetInfo($idownload, $INET_DOWNLOADCOMPLETE)
+$idownload = InetGet($url,@ScriptDir&"\DrvBD_"&@YDAY&@MON&@MSEC&".yrt",$INET_FORCERELOAD, $INET_DOWNLOADWAIT)
 
-InetClose($idownload) ;cerrando el handle creado
 
-$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"; reinicia el valor base de la clave.
+if $idownload = 0 then
+MsgBox(0,"Error","No se ha podido recuperar el fichero de la BD")
+return
+EndIf
 
-$G_BDFile = @ScriptDir&"\DrvBD_"&@YDAY&@MON&@MSEC&".yrt"  ;Actualiza la direccion global del fichro BD
+	$G_BDFile = @ScriptDir&"\DrvBD_"&@YDAY&@MON&@MSEC&".yrt"  ;Actualiza la direccion global del fichro BD
 
-GUICtrlSetData($List1,"")
-GUICtrlSetData($List2,"")
-GUICtrlSetData($Edit1,"")
-GUICtrlSetData($Button6,"Modificar")
-GUICtrlSetState($Edit1,$GUI_DISABLE)
+	GUICtrlSetData($List1,"")
+	GUICtrlSetData($List2,"")
+	GUICtrlSetData($Edit1,"")
+	GUICtrlSetData($Button6,"Modificar")
+	GUICtrlSetState($Edit1,$GUI_DISABLE)
 
-tufmo();Genera la clave de cifrado
-Y_LoadBD()
+	tufmo();Genera la clave de cifrado
+	Y_LoadBD()
+
 EndFunc
 
 
@@ -145,8 +149,6 @@ EndFunc
 ;Función de Arrastrar y soltar
 func DragAndDrop()
 Local $temp
-
-$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"; reinicia el valor base de la clave.
 
 $G_BDFile = @GUI_DragFile  ;Actualiza la direccion global del fichro BD
 
@@ -195,7 +197,7 @@ EndFunc
 func m_AbrirBD()
 Local $temp
 
-$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"; reinicia el valor base de la clave.
+
 
 $temp = FileOpenDialog("Abrir fichero BD",@ScriptDir,"Text Files(*.*)",$FD_FILEMUSTEXIST)
 if @error <> 0 then
@@ -275,6 +277,7 @@ EndIf
 
 IniWriteSection($G_BDFile,Y_CipherText($temp),"")
 GUICtrlSetData($List1,"")
+GUICtrlSetData($List2,"")
 Y_LoadBD()
 
 EndFunc
@@ -304,9 +307,9 @@ EndIf
 $temp = MsgBox($MB_OKCANCEL,"Advertencia","Se eliminará la categoría y todas sus entradas asociadas. ¿Proceder?")
 
 if $temp = $IDOK then
-
 	IniDelete($G_BDFile,Y_CipherText(GUICtrlRead($List1)))
 	GUICtrlSetData($List1,"")
+	GUICtrlSetData($List2,"")
 	Y_LoadBD()
 EndIf
 
@@ -500,6 +503,11 @@ if StringLen($temp) < 4 then ;si no se ha dado clave salir del programa
 	MsgBox(0,"Error","La clave debe contener al menos 4 caracteres. No se permite espacios")
 	return 0
 EndIf
+
+;estableciendo la base de la clave
+$G_C_key="^RJaX$,dcn%wfwf*rf306-ET*-by3=O"
+
+
 
 ;Generando permutaciones entre esta clave y la clave principal
 ;número de ciclos de permutaciones:
