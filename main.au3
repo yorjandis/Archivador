@@ -5,6 +5,7 @@
 #AutoIt3Wrapper_Res_CompanyName=YPG
 #AutoIt3Wrapper_Res_LegalCopyright=Ing. Yorjandis PG
 #AutoIt3Wrapper_Res_Language=1034
+#AutoIt3Wrapper_Run_AU3Check=n
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #cs ----------------------------------------------------------------------------
 
@@ -51,6 +52,9 @@ $MenuItem5 = GUICtrlCreateMenuItem("Salir", $MenuItem1)
 GUICtrlSetOnEvent(-1,"m_Salir")
 $MenuItem4 = GUICtrlCreateMenu("Ayuda")
 $MenuItem6 = GUICtrlCreateMenuItem("Ayuda", $MenuItem4)
+GUICtrlSetOnEvent(-1,"Ayuda")
+$MenuItem6_1 = GUICtrlCreateMenuItem("Condiciones de uso", $MenuItem4)
+GUICtrlSetOnEvent(-1,"CondicionesUso")
 $MenuItem7 = GUICtrlCreateMenuItem("Créditos", $MenuItem4)
 GUICtrlSetOnEvent(-1,"Creditos")
 ;área del menu FIN
@@ -99,12 +103,20 @@ EndFunc
 
 
 
+;mostrar el fichero de ayuda
+func Ayuda()
+	if FileExists(@ScriptDir&"\Ayuda.chm") then ShellExecute(@ScriptDir&"\Ayuda.chm")
+EndFunc
+
 ;Créditos
 Func Creditos()
 	MsgBox(0,"Créditos","Nombre: Archivador V1.0"&@CRLF&"Lenguaje de Programación:AutoIt V3"&@CRLF&"Programador:Ing. Yorjandi PG")
 EndFunc
 
-
+;Condiciones de uso
+Func CondicionesUso()
+	MsgBox(0,"Condiciones de uso del programa","El programa que se describe en este documento (Archivador.exe) se ofrece tal como está en su versión más reciente." &@CRLF&" El Autor del mismo no se responsabiliza por el mal uso que pueda darse o por la pérdida de información relacionada con el uso de este software."&@CRLF&" El usuario final es el único responsable del uso de ese software.")
+EndFunc
 
 
 ;Descarga y gestiona una BD almacenada en google drive (Experimental)
@@ -331,7 +343,10 @@ if $temp = "" then return
 ;Determinar si es una entrada ya existente:
 $temp2 = _GUICtrlListBox_GetCount ( $List2 )
 for $i = 0 to $temp2-1
-	if $temp = _GUICtrlListBox_GetText ( $List2, $i ) then $flag = 1
+	if $temp = _GUICtrlListBox_GetText ( $List2, $i ) then
+		$flag = 1
+		ExitLoop
+	EndIf
 Next
 
 if $flag = 1 Then
