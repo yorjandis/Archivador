@@ -474,13 +474,14 @@ EndFunc
 ;Cifra un texto determiando y devuelve el texto cifrado
 Func Y_CipherText($text)
 Local $temp
-
+_Crypt_Startup()
 $temp = _Crypt_EncryptData($text,$G_C_key,$CALG_AES_256)
 
 if @error <> 0 then ;error
+	_Crypt_Shutdown()
 Return 1
 EndIf
-
+_Crypt_Shutdown()
 Return $temp
 
 EndFunc
@@ -490,14 +491,19 @@ EndFunc
 ;DesCifra un texto determiando y devuelve el texto descifrado
 Func Y_DesCipherText($textCifrado)
 Local $temp
-
+ _Crypt_Startup()
 
 $temp = _Crypt_DecryptData($textCifrado,$G_C_key,$CALG_AES_256)
 
-if @error <> 0 then Return "";error
+if @error <> 0 then
+	_Crypt_Shutdown()
+	Return "";error
+endif
 
 $temp = BinaryToString($temp); Pasando el valor descifrado a cadena
 if @error = 1 then Return ""
+
+_Crypt_Shutdown()
 
 return $temp
 EndFunc
