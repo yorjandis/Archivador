@@ -1,0 +1,32 @@
+<p align="center"><b>Terms and Privacy Policy (Términos y Política de Privacidad)</b></p>
+
+Last Update(Ultima Actualización): 09.05.2021
+<br><br>
+<b>Yorjandis Pérez G.</b> (el "autor") es el desarrollador, propietario y publicador de la Aplicación de Android: Archivador (el "software").
+<br><br>
+
+<b>PRIVACY (PRIVACIDAD)</b>
+<br>-The software does not use, collect or share any personal information of the user or stored information.The software does not have permissions to connect to the Internet.
+<br>-El software no utiliza ni comparte ninguna información personal del usuario ni de la información almacenada.El software no posee permisos de conección a internet.
+<br><br>
+
+<b>USER DATA (DATOS DEL USUARIO)</b>
+<br>-User data remains encrypted at all times, in the device's local storage. The software never connects to the Internet or exchanges any information with other services, users or devices.
+<br>-Los datos del usuario permanecen todo el tiempo cifrados, en el almacenamiento local del dispositivo.
+<br><br>
+
+<b>DISCLAIMER, LIMITATION OF LIABILITY (EXENCIÓN DE RESPONSABILIDAD, LIMITACIÓN DE RESPONSABILIDAD)</b>
+<br>-The end user acknowledges and accepts that the sofwate may have imperfections and may not fully meet the end user's needs. The installation and use of the software is the sole responsibility of the end user. The end user is solely responsible for any loss or alteration of stored data. The software is provided "as is", without any express or implied warranty. In no event shall the author be liable for any damages arising from the use or inability to use the software.
+<br>-El usuario final reconoce y acepta que el sofwate puede tener imperfecciones y no cubrir totalmente sus necesidades. La instalación y uso del software solo es responsabilidad del usuario final. El usuario final es el único responsable de cualquier pérdida o alteración de los datos almacenados. El software se proporciona "tal cual", sin ninguna garantía expresa o implícita. El autor no será responsable en ningún caso de los daños derivados del uso o de la imposibilidad de utilizar el software.
+<br><br>
+
+<b>COPYRIGHT</b>
+<br>-The software is property of Yorjandi Perez G. The fully functional source code is provided and can be freely compiled and distributed. It is not allowed to use the source code files to generate profit in any way. For personal use only.
+<br>-El software es propiedad de Yorjandi Pérez G. Se ofrece el código fuente completamente funcional siendo posible compilarlo y distribuirlo libremente. No esta permitido utilizar los ficheros de codigo fuente para generar lucro en alguna forma. Solo para uso personal.
+<br><br>
+
+<b>CONTACT(CONTACTO)</b>
+<br>-If you have any questions, you can contact the author at this email address (see below)
+<br>-Si tiene alguna duda, puede contactar al autor en este email:
+<a href="mailto:projectsypg@gmail.com">projectsypg@gmail.com</a>
+<br><br>
