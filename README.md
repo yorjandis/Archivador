@@ -1,5 +1,5 @@
 # Archivador
-<b>Purpose:</b> To store, in an encrypted/encrypted form, sensitive information.<a href="https://projectsypg.mozello.es/productos/archivador/">Visit the project website</a><br>
+<b>Purpose:</b> To store, in an encrypted form, sensitive information.<a href="https://projectsypg.mozello.es/productos/archivador/">Visit the project website</a><br>
 Due to the sensitive nature of our personal information, feel free to audit this code and generate the executables for yourself.<br> 
 <b>Developer's Note:</b> If you appreciate this work and feel grateful you could help me continue to create practical solutions by donating to:<a href="https://paypal.me/Yorpg?locale.x=es_ES" target="_blank"> make a donation</a>
 
